@@ -1,32 +1,31 @@
-# React + TypeScript + Vite
+# Airline Voucher Seat Assignment - Frontend UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the frontend UI for the Airline Voucher Seat Assignment Application. It is built using **React** and **Vite**, featuring a Material Design aesthetic tailored with an aviation theme.
 
-Currently, two official plugins are available:
+## Features
+- **Aviation & Material Design**: Incorporates standard Material Design patterns (cards, shadows, typography) layered with aviation-themed visuals (clouds, sky-blue backgrounds).
+- **Responsive Layout**: Designed to work beautifully on both desktop and mobile devices.
+- **Form Validation**: Client-side validation ensuring all required flight data is provided before attempting to generate seats.
+- **Interactive UI/UX**: Loading states, error alerts, and a boarding-pass style ticket display for successful generations.
+- **Dynamic API Config**: API Base URL can be configured using environment variables (`VITE_API_BASE_URL`).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technologies Used
+- React 19
+- Vite
+- Lucide React (for beautiful SVG icons)
+- Vanilla CSS (for strict adherence to project styling requirements)
 
-## React Compiler
+## Setup Instructions
+1. Navigate to this `frontend/` directory.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy `.env.example` to `.env` if you need to override the default API endpoint (default is `http://localhost:8000/api`).
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open your browser to `http://localhost:5173`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+*Note: Ensure the Laravel backend is also running simultaneously to allow the frontend to interact with the API.*
