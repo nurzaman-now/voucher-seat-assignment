@@ -1,66 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Airline Voucher Seat Assignment - Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is the backend API for the Airline Voucher Seat Assignment Application. It is built using **Laravel 11** and serves as the core logic engine for generating unique flight seats based on aircraft types and preventing duplicates.
 
-## About Laravel
+## Features
+- **Seat Generator Service**: Contains business logic to dynamically generate 3 unique random seats based on the selected aircraft (ATR, Airbus 320, Boeing 737 Max).
+- **Validation**: Strict API validation using Laravel Form Requests.
+- **Duplicate Prevention**: Enforces a composite unique key (`flight_number` + `flight_date`) at the database level to ensure a flight voucher is only generated once per day.
+- **RESTful API**: Standardized JSON responses utilizing Laravel API Resources.
+- **Feature Tests**: PHPUnit tests to verify success and error (duplicate) scenarios.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## API Endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Check Voucher Existence
+`POST /api/check`
+Checks if a voucher has already been generated for the given flight.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Request Body:**
+```json
+{
+  "flight_number": "GA102",
+  "flight_date": "2025-07-12"
+}
+```
 
-## Learning Laravel
+**Response:**
+```json
+{
+  "exists": true
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Generate Voucher
+`POST /api/generate`
+Generates 3 unique seats and saves the voucher to the database.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Request Body:**
+```json
+{
+  "crew_name": "John Doe",
+  "crew_id": "CRW001",
+  "flight_number": "GA102",
+  "flight_date": "2025-07-12",
+  "aircraft_type": "Airbus 320"
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "crew_name": "John Doe",
+    "crew_id": "CRW001",
+    "flight_number": "GA102",
+    "flight_date": "2025-07-12",
+    "aircraft_type": "Airbus 320",
+    "seats": ["3B", "7C", "14D"],
+    "created_at": "2025-07-10 12:00:00"
+  },
+  "seats": ["3B", "7C", "14D"]
+}
+```
 
-## Laravel Sponsors
+## Setup Instructions
+1. Navigate to this `backend/` directory.
+2. Install dependencies: `composer install`
+3. Copy `.env.example` to `.env` and configure `DB_CONNECTION=sqlite`.
+4. Generate app key: `php artisan key:generate`
+5. Run migrations: `php artisan migrate` (creates `database.sqlite`).
+6. Serve the application: `php artisan serve`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Running Tests
+```bash
+php artisan test
+```
