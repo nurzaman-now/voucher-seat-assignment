@@ -1,10 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
 
+@theme {
+  --color-primary: var(--md-primary);
+  --color-primary-dark: var(--md-primary-dark);
+  --color-primary-light: var(--md-primary-light);
+  --color-secondary: var(--md-secondary);
+  --color-background: var(--md-background);
+  --color-surface: var(--md-surface);
+  --color-error: var(--md-error);
+  --color-success: var(--md-success);
+}
 :root {
   /* Material Blue / Aviation Colors */
-  --md-primary: #1976D2;
+  --md-primary: #50a8ff;
   --md-primary-dark: #115293;
-  --md-primary-light: #4791db;
+  --md-primary-light: #98ccff;
   --md-secondary: #ff9800; /* Airline accent, e.g., for tickets */
   --md-background: #E3F2FD; /* Light sky blue */
   --md-surface: #FFFFFF;
