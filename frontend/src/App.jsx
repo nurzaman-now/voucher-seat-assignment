@@ -8,26 +8,29 @@ function App() {
 
   return (
     <>
-      <div className="cloud cloud-1"></div>
-      <div className="cloud cloud-2"></div>
+      <div className="fixed bg-white/80 rounded-full -z-10 shadow-sm w-[200px] h-[60px] top-[15%] -left-[200px] animate-[moveClouds_40s_linear_infinite] before:absolute before:bg-white before:rounded-full before:w-[100px] before:h-[100px] before:-top-[40px] before:left-[20px] after:absolute after:bg-white after:rounded-full after:w-[70px] after:h-[70px] after:-top-[30px] after:right-[20px]"></div>
+      <div className="fixed bg-white/80 rounded-full -z-10 shadow-sm w-[150px] h-[50px] top-[40%] -left-[200px] animate-[moveClouds_30s_linear_infinite] -animate-delay-15s scale-75 before:absolute before:bg-white before:rounded-full before:w-[80px] before:h-[80px] before:-top-[30px] before:left-[20px] after:absolute after:bg-white after:rounded-full after:w-[50px] after:h-[50px] after:-top-[20px] after:right-[20px]"></div>
 
-      <div className="app-container">
+      <div className="w-full max-w-5xl mx-auto p-4 md:p-8">
         {!result ? (
-          <>
-            <div className="material-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', backgroundColor: 'var(--md-primary)', color: 'white' }}>
-              <div style={{ padding: '1rem' }}>
-                <PlaneTakeoff size={80} color="white" style={{ marginBottom: '1.5rem', dropShadow: '0 4px 6px rgba(0,0,0,0.3)' }} />
-                <h3 className="title" style={{ fontSize: '2.5rem', color: 'white', marginBottom: '1rem' }}>AeroVoucher</h3>
-                <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '1rem', lineHeight: '1.6', fontSize: '1.1rem' }}>
-                  A modern, reliable seat assignment system for airline voucher winners.
-                  Fill out the crew information and flight details to generate 3 unique random seats instantly.
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+            <div className="md:w-5/12 relative bg-[url('/airplane-bg.png')] bg-cover bg-center p-10 flex flex-col justify-center items-center text-center overflow-hidden">
+              <div className="absolute inset-0 bg-blue-500/30"></div>
+              <div className="relative z-10 flex flex-col items-center">
+                <PlaneTakeoff size={80} className="mb-6 drop-shadow-lg text-white" />
+                <h3 className="text-white text-4xl font-bold tracking-tight mb-4 drop-shadow-md">AeroVoucher</h3>
+                <p className="text-blue-50 mt-2 leading-relaxed text-lg drop-shadow-md font-medium">
+                  A modern, reliable seat assignment system for airline voucher winners. Fill out the flight details to generate unique random seats instantly.
                 </p>
               </div>
             </div>
-            <VoucherForm onSuccess={(data) => setResult(data)} />
-          </>
+            
+            <div className="md:w-7/12 p-8 md:p-10">
+              <VoucherForm onSuccess={(data) => setResult(data)} />
+            </div>
+          </div>
         ) : (
-          <div style={{ gridColumn: '1 / -1', maxWidth: '850px', margin: '0 auto', width: '100%' }}>
+          <div className="w-full max-w-3xl mx-auto">
             <VoucherResult result={result} onReset={() => setResult(null)} />
           </div>
         )}

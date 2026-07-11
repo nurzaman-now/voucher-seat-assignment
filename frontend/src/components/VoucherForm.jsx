@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { PlaneTakeoff, User, Calendar, Hash, AlertCircle, Send } from 'lucide-react';
+import Input from './Input';
+import Button from './Button';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
@@ -11,7 +13,7 @@ export default function VoucherForm({ onSuccess }) {
     flight_date: '',
     aircraft_type: 'ATR',
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -35,9 +37,9 @@ export default function VoucherForm({ onSuccess }) {
           flight_date: formData.flight_date,
         }),
       });
-      
+
       const checkData = await checkRes.json();
-      
+
       if (checkData.exists) {
         setError('A voucher has already been generated for this flight on the selected date.');
         setLoading(false);
@@ -55,10 +57,10 @@ export default function VoucherForm({ onSuccess }) {
 
       if (!genRes.ok) {
         if (genData.errors) {
-            const firstError = Object.values(genData.errors)[0][0];
-            setError(firstError);
+          const firstError = Object.values(genData.errors)[0][0];
+          setError(firstError);
         } else {
-            setError(genData.message || 'Failed to generate voucher.');
+          setError(genData.message || 'Failed to generate voucher.');
         }
         setLoading(false);
         return;
@@ -73,86 +75,71 @@ export default function VoucherForm({ onSuccess }) {
   };
 
   return (
-    <div className="material-card">
-      <h1 className="title">Flight Details</h1>
-      <p className="subtitle">Enter the information below to assign seats for the voucher winners.</p>
+    <div className="w-full">
+      <h2 className="text-2xl text-gray-800 font-bold tracking-tight mb-2">Flight Details</h2>
+      <p className="text-gray-500 text-sm mb-8">Enter the information below to assign seats for the voucher winners.</p>
 
       {error && (
-        <div className="alert alert-danger">
-          <AlertCircle size={24} />
+        <div className="p-4 rounded-lg mb-6 flex items-start gap-3 font-medium bg-red-50 text-red-700 text-sm border border-red-200">
+          <AlertCircle size={20} className="shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Crew Name</label>
-          <div style={{ position: 'relative' }}>
-            <User size={20} style={{ position: 'absolute', left: '8px', top: '8px', color: 'var(--text-disabled)' }} />
-            <input 
-              type="text" 
-              name="crew_name" 
-              className="form-input" 
-              value={formData.crew_name}
-              onChange={handleChange}
-              required 
-            />
-          </div>
+        <Input
+          label="Crew Name"
+          icon={<User size={18} />}
+          type="text"
+          name="crew_name"
+          wrapperClassName="mb-5"
+          value={formData.crew_name}
+          onChange={handleChange}
+          placeholder=""
+          required
+        />
+
+        <Input
+          label="Crew ID"
+          icon={<Hash size={18} />}
+          type="text"
+          name="crew_id"
+          wrapperClassName="mb-5"
+          value={formData.crew_id}
+          onChange={handleChange}
+          placeholder=""
+          required
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+          <Input
+            label="Flight Number"
+            icon={<PlaneTakeoff size={18} />}
+            type="text"
+            name="flight_number"
+            value={formData.flight_number}
+            onChange={handleChange}
+            placeholder=""
+            required
+          />
+
+          <Input
+            label="Flight Date"
+            icon={<Calendar size={18} />}
+            type="date"
+            name="flight_date"
+            wrapperClassName="mb-0"
+            value={formData.flight_date}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Crew ID</label>
-          <div style={{ position: 'relative' }}>
-            <Hash size={20} style={{ position: 'absolute', left: '8px', top: '8px', color: 'var(--text-disabled)' }} />
-            <input 
-              type="text" 
-              name="crew_id" 
-              className="form-input" 
-              value={formData.crew_id}
-              onChange={handleChange}
-              required 
-            />
-          </div>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="form-group">
-            <label className="form-label">Flight Number</label>
-            <div style={{ position: 'relative' }}>
-                <PlaneTakeoff size={20} style={{ position: 'absolute', left: '8px', top: '8px', color: 'var(--text-disabled)' }} />
-                <input 
-                type="text" 
-                name="flight_number" 
-                className="form-input" 
-                style={{ textTransform: 'uppercase' }}
-                value={formData.flight_number}
-                onChange={handleChange}
-                required 
-                />
-            </div>
-            </div>
-
-            <div className="form-group">
-            <label className="form-label">Flight Date</label>
-            <div style={{ position: 'relative' }}>
-                <Calendar size={20} style={{ position: 'absolute', left: '8px', top: '8px', color: 'var(--text-disabled)' }} />
-                <input 
-                type="date" 
-                name="flight_date" 
-                className="form-input" 
-                value={formData.flight_date}
-                onChange={handleChange}
-                required 
-                />
-            </div>
-            </div>
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Aircraft Type</label>
-          <select 
-            name="aircraft_type" 
-            className="form-select"
+        <div className="mb-8 relative">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Aircraft Type</label>
+          <select
+            name="aircraft_type"
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-lg py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none"
             value={formData.aircraft_type}
             onChange={handleChange}
             required
@@ -163,13 +150,9 @@ export default function VoucherForm({ onSuccess }) {
           </select>
         </div>
 
-        <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '1.5rem' }}>
-          {loading ? <div className="spinner"></div> : (
-            <>
-              <Send size={18} /> Generate Vouchers
-            </>
-          )}
-        </button>
+        <Button type="submit" className="w-full" loading={loading} icon={<Send size={18} />}>
+          Generate Vouchers
+        </Button>
       </form>
     </div>
   );

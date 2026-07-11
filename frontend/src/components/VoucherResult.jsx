@@ -8,68 +8,67 @@ export default function VoucherResult({ result, onReset }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h2 className="title" style={{ margin: 0 }}>Boarding Passes</h2>
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl text-primary font-medium tracking-tight m-0">Boarding Passes</h2>
         <button 
           onClick={onReset} 
-          className="btn btn-primary" 
-          style={{ width: 'auto', padding: '0.5rem 1rem', background: 'var(--md-surface)', color: 'var(--md-primary)', boxShadow: 'var(--shadow-1)' }}
+          className="inline-flex items-center justify-center gap-2 w-auto py-2 px-4 border-0 rounded bg-white text-primary font-medium uppercase tracking-wide cursor-pointer shadow-sm hover:shadow-md transition-shadow"
         >
           <ArrowLeft size={18} /> New Flight
         </button>
       </div>
 
-      <div style={{ marginBottom: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        <div className="material-card" style={{ flex: 1, padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Plane size={32} color="var(--md-primary)" />
+      <div className="mb-8 flex gap-4 flex-wrap">
+        <div className="flex-1 bg-white rounded-lg shadow-md py-4 px-6 flex items-center gap-4 transition-shadow hover:shadow-lg">
+          <Plane size={32} className="text-primary" />
           <div>
-            <div className="ticket-label">Flight Number</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--md-primary-dark)' }}>{data.flight_number?.toUpperCase()}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Flight Number</div>
+            <div className="text-xl font-bold text-primary">{data.flight_number?.toUpperCase()}</div>
           </div>
         </div>
-        <div className="material-card" style={{ flex: 1, padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <CalendarDays size={32} color="var(--md-primary)" />
+        <div className="flex-1 bg-white rounded-lg shadow-md py-4 px-6 flex items-center gap-4 transition-shadow hover:shadow-lg">
+          <CalendarDays size={32} className="text-primary" />
           <div>
-            <div className="ticket-label">Departure Date</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--md-primary-dark)' }}>{data.flight_date}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Departure Date</div>
+            <div className="text-xl font-bold text-primary">{data.flight_date}</div>
           </div>
         </div>
       </div>
 
-      <div className="ticket-container">
+      <div className="flex flex-col gap-6">
         {seats.map((seat, index) => (
-          <div key={index} className="ticket">
-            <div className="ticket-main">
-              <div className="ticket-header" style={{ margin: '-1.5rem -1.5rem 1.5rem -1.5rem' }}>
+          <div key={index} className="bg-white rounded-xl shadow-sm flex relative overflow-hidden border-l-[6px] border-primary">
+            <div className="flex-1 p-6">
+              <div className="bg-gray-100 p-4 border-b border-gray-300 flex items-center gap-2 text-primary font-medium -mt-6 -mx-6 mb-6">
                 <Plane size={18} />
                 <span>{data.aircraft_type}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <div className="ticket-label">Passenger</div>
-                  <div className="ticket-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <User size={16} color="var(--text-secondary)" />
+                  <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Passenger</div>
+                  <div className="text-lg font-medium text-gray-900 flex items-center gap-2">
+                    <User size={16} className="text-gray-500" />
                     Voucher Winner #{index + 1}
                   </div>
                 </div>
                 <div>
-                  <div className="ticket-label">Assigned By (Crew)</div>
-                  <div className="ticket-value">{data.crew_name}</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Assigned By (Crew)</div>
+                  <div className="text-lg font-medium text-gray-900">{data.crew_name}</div>
                 </div>
               </div>
             </div>
             
-            <div className="ticket-dashed-line"></div>
+            <div className="relative my-4 border-l-2 border-dashed border-gray-300 before:absolute before:content-[''] before:w-6 before:h-6 before:bg-primary-light before:rounded-full before:-left-[13px] before:-top-[24px] before:shadow-inner after:absolute after:content-[''] after:w-6 after:h-6 after:bg-primary-light after:rounded-full after:-left-[13px] after:-bottom-[24px] after:shadow-inner"></div>
             
-            <div className="seat-section">
-              <div className="ticket-label" style={{ color: 'var(--md-secondary)' }}>Seat</div>
-              <div className="seat-number">{seat}</div>
+            <div className="w-[120px] p-6 bg-gray-50 flex flex-col justify-center items-center rounded-r-xl">
+              <div className="text-xs text-orange-500 uppercase tracking-wide mb-1">Seat</div>
+              <div className="text-4xl font-bold text-orange-500 leading-none">{seat}</div>
             </div>
           </div>
         ))}
       </div>
       
-      <div style={{ marginTop: '2.5rem', textAlign: 'center', color: 'var(--md-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '1.1rem', fontWeight: 500 }}>
+      <div className="mt-10 text-center text-green-700 flex items-center justify-center gap-3 text-lg font-medium">
         <Ticket size={24} />
         <span>Vouchers successfully generated and secured!</span>
       </div>
